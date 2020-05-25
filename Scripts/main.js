@@ -34,14 +34,11 @@ function write (characteristic, value) {
 };
 
 function request_bluetooth(method) {
-	let bluetooth_device;
 	navigator.bluetooth.requestDevice({
 		acceptAllDevices: true,
 		optionalServices: [service],
 	})
-	.then(device => {
-		bluetooth_device = device;
-		return device.gatt.connect();})
+	.then(device => device.gatt.connect())
 	.then(server => server.getPrimaryService(service))
 	.then(service => service.getCharacteristics())
 	.then(characteristics => {
@@ -59,7 +56,6 @@ function request_bluetooth(method) {
 			};
 		});
 	})
-	.then(bluetooth_device.gatt.disconnect())
 	.catch(error => console.log('Error:',error));
 };
 
