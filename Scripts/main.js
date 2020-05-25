@@ -18,7 +18,6 @@ for (let i = 0; i < list_item.children.length; i++) {
 // Functions
 
 function request_bluetooth(method) {
-	const map = characteristic_map[characteristic.uuid];
 	let value;
 
 	navigator.bluetooth.requestDevice({
@@ -30,6 +29,7 @@ function request_bluetooth(method) {
 	.then(service => service.getCharacteristics())
 	.then(characteristics => {
 		characteristics.forEach(characteristic => async function(characteristic) {
+			const map = characteristic_map[characteristic.uuid];
 			if (method === "read") {
 				value = await characteristic.readValue();
 				list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
