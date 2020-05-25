@@ -28,7 +28,7 @@ function request_bluetooth(method) {
 	.then(server => server.getPrimaryService(service))
 	.then(service => service.getCharacteristics())
 	.then(characteristics => {
-		characteristics.forEach(characteristic => async function(characteristic) {
+		characteristics.forEach(async function(characteristic) {
 			const map = characteristic_map[characteristic.uuid];
 			if (method === "read") {
 				value = await characteristic.readValue();
