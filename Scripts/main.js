@@ -18,22 +18,32 @@ for (let i = 0; i < list_item.children.length; i++) {
 // Functions
 
 
-function read(characteristic) {
-	return characteristic.readValue().then(value => {
-		const map = characteristic_map[characteristic.uuid];
-		list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
+function read(characteristic, delay) {
+	return delay_promise(delay).then(_ => {
+			characteristic.readValue().then(value => {
+			const map = characteristic_map[characteristic.uuid];
+			list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
+		});
 	});
 };
 
-function write (characteristic, value) {
-	return new Promise((resolve, reject) => {
+function write (characteristic, value, delay) {
+	return delay_promise(delay).then(_ => {
 		console.log('Write:',value,'to',characteristic.uuid);
 		const map = characteristic_map[characteristic.uuid];
 		characteristic.writeValue(Uint8Array.of(value));
 	});
 };
 
+function delay_promise(delay) {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, delay);
+	});
+}
+
 function request_bluetooth(method) {
+	let index = 0;
+
 	navigator.bluetooth.requestDevice({
 		acceptAllDevices: true,
 		optionalServices: [service],
@@ -44,14 +54,14 @@ function request_bluetooth(method) {
 	.then(characteristics => {
 		characteristics.forEach(characteristic => {
 			if (method === "read") {
-				read(characteristic);
+				read(characteristic, index++ * 10);
 			}
 			else {
 				const value = list_item.children[characteristic_map[characteristic.uuid].i].children[0].children[0].value;
 				const checked = list_item.children[characteristic_map[characteristic.uuid].i].children[1].checked;
 				console.log('c',checked)
 				if (value !== "" && checked) {
-					write(characteristic, value);
+					write(characteristic, value, index++ * 10);
 				};
 			};
 		});
