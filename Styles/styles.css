@@ -20,6 +20,7 @@ body {
 h1 {
 	font-size: 5vh;
 	margin-bottom: -6vh;
+	max-width: 30vh;
 }
 
 a {
