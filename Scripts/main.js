@@ -19,6 +19,7 @@ for (let i = 0; i < list_item.children.length; i++) {
 
 
 function read(characteristic, delay) {
+	console.log('delay',delay);
 	return delay_promise(delay).then(_ => {
 			characteristic.readValue().then(value => {
 			const map = characteristic_map[characteristic.uuid];
@@ -54,14 +55,14 @@ function request_bluetooth(method) {
 	.then(characteristics => {
 		characteristics.forEach(characteristic => {
 			if (method === "read") {
-				read(characteristic, index++ * 10);
+				read(characteristic, index++ * 50);
 			}
 			else {
 				const value = list_item.children[characteristic_map[characteristic.uuid].i].children[0].children[0].value;
 				const checked = list_item.children[characteristic_map[characteristic.uuid].i].children[1].checked;
 				console.log('c',checked)
 				if (value !== "" && checked) {
-					write(characteristic, value, index++ * 10);
+					write(characteristic, value, index++ * 50);
 				};
 			};
 		});
