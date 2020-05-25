@@ -18,7 +18,7 @@ for (let i = 0; i < list_item.children.length; i++) {
 // Functions
 
 function request_bluetooth(method) {
-	let value;
+	let read_value;
 
 	navigator.bluetooth.requestDevice({
 		acceptAllDevices: true,
@@ -31,14 +31,14 @@ function request_bluetooth(method) {
 		characteristics.forEach(async function(characteristic) {
 			const map = characteristic_map[characteristic.uuid];
 			if (method === "read") {
-				value = await characteristic.readValue();
+				read_value = await characteristic.readValue();
 				list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
 			}
 			else {
 				const value = list_item.children[characteristic_map[characteristic.uuid].i].children[0].children[0].value;
 				const checked = list_item.children[characteristic_map[characteristic.uuid].i].children[1].checked;
 				if (value !== "" && checked) {
-					value = await characteristic.writeValue(Uint8Array.of(value));
+					read_value = await characteristic.writeValue(Uint8Array.of(value));
 				};
 			};
 		});
