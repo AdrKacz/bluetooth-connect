@@ -17,9 +17,23 @@ for (let i = 0; i < list_item.children.length; i++) {
 
 // Functions
 
-function request_bluetooth(method) {
-	let read_value;
 
+function read(characteristic) {
+	return characteristic.readValue().then(value => {
+		const map = characteristic_map[characteristic.uuid];
+		list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
+	});
+};
+
+function write (characteristic, value) {
+	return new Promise((resolve, reject) => {
+		console.log('Write:',value,'to',characteristic.uuid);
+		const map = characteristic_map[characteristic.uuid];
+		characteristic.writeValue(Uint8Array.of(value));
+	});
+};
+
+function request_bluetooth(method) {
 	navigator.bluetooth.requestDevice({
 		acceptAllDevices: true,
 		optionalServices: [service],
@@ -28,17 +42,16 @@ function request_bluetooth(method) {
 	.then(server => server.getPrimaryService(service))
 	.then(service => service.getCharacteristics())
 	.then(characteristics => {
-		characteristics.forEach(async function(characteristic) {
-			const map = characteristic_map[characteristic.uuid];
+		characteristics.forEach(characteristic => {
 			if (method === "read") {
-				read_value = await characteristic.readValue();
-				list_item.children[map.i].children[0].children[0].value = read_value.getUint8(0);
+				read(characteristic);
 			}
 			else {
 				const value = list_item.children[characteristic_map[characteristic.uuid].i].children[0].children[0].value;
 				const checked = list_item.children[characteristic_map[characteristic.uuid].i].children[1].checked;
+				console.log('c',checked)
 				if (value !== "" && checked) {
-					read_value = await characteristic.writeValue(Uint8Array.of(value));
+					write(characteristic, value);
 				};
 			};
 		});
@@ -66,4 +79,3 @@ send_link.addEventListener('click', function () {
 
 	send_link.setAttribute('href', href);
 });
-
