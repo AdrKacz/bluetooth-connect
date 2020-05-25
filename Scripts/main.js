@@ -17,7 +17,7 @@ for (let i = 0; i < list_item.children.length; i++) {
 
 // Functions
 
-async function request_bluetooth(method) {
+function request_bluetooth(method) {
 	const map = characteristic_map[characteristic.uuid];
 	let value;
 
@@ -29,7 +29,7 @@ async function request_bluetooth(method) {
 	.then(server => server.getPrimaryService(service))
 	.then(service => service.getCharacteristics())
 	.then(characteristics => {
-		characteristics.forEach(characteristic => {
+		characteristics.forEach(characteristic => async function(characteristic) {
 			if (method === "read") {
 				value = await characteristic.readValue();
 				list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
