@@ -36,6 +36,8 @@ a {
 	border: .5vw solid #6b7f82;
 
 	border-radius: .2em;
+
+	vertical-align: middle;
 }
 
 a + button {
@@ -55,17 +57,29 @@ button {
 	border-radius: .2em;
 }
 
+label {
+	margin-left: 2vw;
+}
+
 input {
-	max-width: 60%;
+	display: inline-block;
+	position: relative;
+	top: .3em;
+	max-width: 40vw;
 	min-height: 3vh;
 
 	font-size: 3vh;
-	vertical-align: middle;
+	float: left;
+
+	border-radius: .2em;
+	direction : rtl;
 }
 
 input.check {
 	width: 1em;
 	height: 1em;
+
+	float: right;
 }
 
 li {
@@ -74,7 +88,7 @@ li {
 }
 
 ul {
-	padding-left: 3vh;
+	padding-left: 1vh;
 	height: 55vh;
 	overflow: auto;
 }
