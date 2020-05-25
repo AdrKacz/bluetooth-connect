@@ -32,7 +32,7 @@ function request_bluetooth(method) {
 			const map = characteristic_map[characteristic.uuid];
 			if (method === "read") {
 				read_value = await characteristic.readValue();
-				list_item.children[map.i].children[0].children[0].value = value.getUint8(0);
+				list_item.children[map.i].children[0].children[0].value = read_value.getUint8(0);
 			}
 			else {
 				const value = list_item.children[characteristic_map[characteristic.uuid].i].children[0].children[0].value;
