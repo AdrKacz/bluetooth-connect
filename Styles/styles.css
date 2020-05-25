@@ -15,11 +15,13 @@ body {
 
 	color: #fcfaf9;
 	font-size: 5vh;
+
+	font-family: 'Inconsolata', monospace;
 }
 
 h1 {
 	font-size: 5vh;
-	margin-bottom: -6vh;
+	margin-bottom: -10vh;
 	max-width: 30vh;
 }
 
@@ -35,7 +37,7 @@ a {
 }
 
 a + button {
-	margin-top: 5vh;
+	margin-top: 15vh;
 }
 
 button {
@@ -61,10 +63,12 @@ input.check {
 }
 
 li {
-	list-style-type: square;
+	list-style-type: none;
 	margin: 1vh auto;
 }
 
 ul {
 	padding-left: 3vh;
+	height: 55vh;
+	overflow: auto;
 }
